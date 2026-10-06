@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            /* Подставляем вашу текстуру фона (bg.png), а если её нет — фиолетовый градиент */
             background: linear-gradient(135deg, #4a0e4e, #240046), url('bg.png') no-repeat center center fixed;
             background-size: cover;
             display: flex;
@@ -17,30 +16,29 @@
             min-height: 100vh;
             min-height: 100dvh;
             margin: 0;
-            padding: max(20px, env(safe-area-inset-top)) 15px 25px;
+            padding: max(15px, env(safe-area-inset-top)) 15px 20px;
             box-sizing: border-box;
             color: #ffffff;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* Верхняя панель */
         .top-bar {
             width: 100%;
             max-width: 450px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
         .back-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -48,7 +46,7 @@
         }
         .progress-bar-container {
             flex-grow: 1;
-            height: 12px;
+            height: 10px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             margin: 0 15px;
@@ -64,32 +62,31 @@
         .stats-badge {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
-        /* Заголовок */
         .header-text {
             text-align: center;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
         h1 {
-            margin: 0 0 3px 0;
-            font-size: 1.7rem;
+            margin: 0 0 2px 0;
+            font-size: 1.5rem;
         }
         p.subtitle {
             margin: 0;
             color: #e0aaff;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* Контейнер часов с вашим изображением и цифрами */
+        /* Увеличили размер часов для удобства */
         .watch-container {
-            width: 230px;
-            height: 230px;
+            width: 260px;
+            height: 260px;
             position: relative;
-            margin: 5px 0;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -102,18 +99,18 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
         }
 
-        /* Цифры на циферблате */
+        /* Цифры смещены точно на шкалу циферблата */
         .clock-number {
             position: absolute;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             font-weight: bold;
             color: #ffffff;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.9);
             transform: translate(-50%, -50%);
             z-index: 5;
         }
 
-        /* Стрелки часов */
+        /* Увеличенные стрелки */
         .hand {
             position: absolute;
             bottom: 50%;
@@ -124,14 +121,14 @@
         }
         .hour-hand {
             width: 6px;
-            height: 45px;
+            height: 52px;
             margin-left: -3px;
             background: #ffffff;
             border-radius: 3px;
         }
         .minute-hand {
             width: 3px;
-            height: 65px;
+            height: 76px;
             margin-left: -1.5px;
             background: #ff3366;
             border-radius: 2px;
@@ -149,29 +146,28 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* Зона ответа */
         .answer-card {
             width: 100%;
             max-width: 450px;
             background: rgba(60, 10, 90, 0.5);
             border: 2px solid rgba(255, 255, 255, 0.15);
-            border-radius: 18px;
-            padding: 12px;
+            border-radius: 16px;
+            padding: 10px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             backdrop-filter: blur(5px);
         }
         .answer-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #e0aaff;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 500;
         }
         .answer-slots {
-            min-height: 48px;
+            min-height: 44px;
             width: 100%;
             display: flex;
             flex-wrap: wrap;
@@ -180,21 +176,19 @@
             gap: 6px;
         }
 
-        /* Банк слов */
         .word-bank {
             width: 100%;
             max-width: 450px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 10px;
-            min-height: 90px;
+            gap: 6px;
+            margin-bottom: 8px;
+            min-height: 85px;
         }
 
-        /* Плитки */
         .tile {
-            padding: 10px 16px;
+            padding: 10px 14px;
             background-color: #f3e8ff;
             border-bottom: 4px solid #d8b4fe;
             border-radius: 12px;
@@ -217,7 +211,6 @@
             border-bottom-width: 3px;
         }
 
-        /* Кнопка */
         .action-container {
             width: 100%;
             max-width: 450px;
@@ -225,7 +218,7 @@
         button.action-btn {
             width: 100%;
             padding: 14px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: bold;
             text-transform: uppercase;
             border: none;
@@ -251,11 +244,11 @@
         .feedback {
             width: 100%;
             max-width: 450px;
-            margin-bottom: 8px;
-            font-size: 1rem;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
             font-weight: bold;
             text-align: center;
-            min-height: 22px;
+            min-height: 20px;
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -272,7 +265,7 @@
             <div class="progress-bar-fill" id="progressFill"></div>
         </div>
         <div class="stats-badge">❤️ <span id="livesCount">5</span></div>
-        <div class="stats-badge" style="margin-left: 8px;">⭐ <span id="scoreCount">0</span></div>
+        <div class="stats-badge" style="margin-left: 6px;">⭐ <span id="scoreCount">0</span></div>
     </div>
 
     <div class="header-text">
@@ -280,7 +273,7 @@
         <p class="subtitle">Соберите время из плиточек</p>
     </div>
 
-    <!-- Часы с вашей картинкой и стрелками -->
+    <!-- Увеличенный контейнер часов -->
     <div class="watch-container" id="clockContainer">
         <img src="watch.png" alt="Watch" class="watch-bg-img" onerror="this.style.display='none'">
         <div class="hand hour-hand" id="hourHand"></div>
@@ -322,11 +315,12 @@
             const scoreCount = document.getElementById('scoreCount');
             const progressFill = document.getElementById('progressFill');
 
-            // Автоматическая расстановка цифр по кругу над картинкой часов
+            // Расставляем цифры по внешнему краю циферблата
             function setupClockNumbers() {
-                const radius = 68; // Радиус расположения цифр от центра
-                const centerX = 115; // Центр контейнера по X
-                const centerY = 115; // Центр контейнера по Y
+                clockContainer.querySelectorAll('.clock-number').forEach(e => e.remove());
+                const radius = 86; // Увеличили радиус под размер циферблата
+                const centerX = 130; // Центр контейнера (260 / 2)
+                const centerY = 130;
 
                 for (let i = 1; i <= 12; i++) {
                     let numDiv = document.createElement('div');
