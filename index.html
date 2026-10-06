@@ -16,16 +16,17 @@
             min-height: 100vh;
             min-height: 100dvh;
             margin: 0;
-            padding: max(8px, env(safe-area-inset-top)) 15px 15px;
+            padding: max(10px, env(safe-area-inset-top)) 15px 15px;
             box-sizing: border-box;
             color: #ffffff;
             user-select: none;
             -webkit-user-select: none;
+            overflow-x: hidden;
         }
 
         .top-bar {
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -81,28 +82,29 @@
             font-size: 0.8rem;
         }
 
-        /* Часы стали крупнее (330px вместо 280px) */
+        /* Фиксированный контейнер часов с четкими размерами для мобильных */
         .watch-container {
-            width: 330px;
-            height: 330px;
+            width: 240px;
+            height: 240px;
             position: relative;
-            margin: -5px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 5px auto;
+            flex-shrink: 0;
         }
         .watch-bg-img {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: contain;
+            pointer-events: none;
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
         }
 
-        /* Цифры под увеличенный циферблат (радиус 73px при центре 165px) */
+        /* Идеально откалиброванные цифры под циферблат */
         .clock-number {
             position: absolute;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: bold;
             color: #ffffff;
             text-shadow: 0 1px 3px rgba(0,0,0,0.9);
@@ -110,45 +112,45 @@
             z-index: 5;
         }
 
-        /* Стрелки оставлены прежней удобной длины */
+        /* Фиксированные стрелки, привязанные к центру часов (120px / 120px) */
         .hand {
             position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform-origin: bottom;
+            bottom: 120px; /* Строго центр по вертикали */
+            left: 120px;  /* Строго центр по горизонтали */
+            transform-origin: bottom center;
             transition: transform 0.5s cubic-bezier(0.4, 2.0, 0.2, 1);
             z-index: 6;
         }
         .hour-hand {
-            width: 5px;
-            height: 38px;
-            margin-left: -2.5px;
+            width: 4px;
+            height: 34px;
+            margin-left: -2px;
             background: #ffffff;
-            border-radius: 3px;
-        }
-        .minute-hand {
-            width: 2.5px;
-            height: 56px;
-            margin-left: -1.25px;
-            background: #ff3366;
             border-radius: 2px;
         }
+        .minute-hand {
+            width: 2px;
+            height: 50px;
+            margin-left: -1px;
+            background: #ff3366;
+            border-radius: 1px;
+        }
         .center-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: #ffffff;
             border-radius: 50%;
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 120px;
+            left: 120px;
             transform: translate(-50%, -50%);
             z-index: 7;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
 
         .answer-card {
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
             background: rgba(60, 10, 90, 0.5);
             border: 2px solid rgba(255, 255, 255, 0.15);
             border-radius: 16px;
@@ -167,24 +169,24 @@
             font-weight: 500;
         }
         .answer-slots {
-            min-height: 40px;
+            min-height: 38px;
             width: 100%;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .word-bank {
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 6px;
             margin-bottom: 6px;
-            min-height: 80px;
+            min-height: 75px;
         }
 
         .tile {
@@ -192,7 +194,7 @@
             background-color: #f3e8ff;
             border-bottom: 4px solid #d8b4fe;
             border-radius: 12px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: bold;
             color: #4a0e4e;
             cursor: pointer;
@@ -213,7 +215,7 @@
 
         .action-container {
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
         }
         button.action-btn {
             width: 100%;
@@ -243,12 +245,12 @@
         
         .feedback {
             width: 100%;
-            max-width: 450px;
+            max-width: 400px;
             margin-bottom: 4px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
             text-align: center;
-            min-height: 18px;
+            min-height: 16px;
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -273,6 +275,7 @@
         <p class="subtitle">Соберите время из плиточек</p>
     </div>
 
+    <!-- Фиксированный блок часов -->
     <div class="watch-container" id="clockContainer">
         <img src="watch.png" alt="Watch" class="watch-bg-img" onerror="this.style.display='none'">
         <div class="hand hour-hand" id="hourHand"></div>
@@ -316,9 +319,9 @@
 
             function setupClockNumbers() {
                 clockContainer.querySelectorAll('.clock-number').forEach(e => e.remove());
-                const radius = 73; // Радиус под увеличенные часы (330 / 2 = 165 центр)
-                const centerX = 165; 
-                const centerY = 165;
+                const radius = 54; // Фиксированный радиус под идеальное положение цифр
+                const centerX = 120; // Центр фиксированного контейнера (240 / 2)
+                const centerY = 120;
 
                 for (let i = 1; i <= 12; i++) {
                     let numDiv = document.createElement('div');
