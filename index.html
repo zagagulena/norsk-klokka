@@ -16,7 +16,7 @@
             min-height: 100vh;
             min-height: 100dvh;
             margin: 0;
-            padding: max(10px, env(safe-area-inset-top)) 15px 20px;
+            padding: max(8px, env(safe-area-inset-top)) 15px 15px;
             box-sizing: border-box;
             color: #ffffff;
             user-select: none;
@@ -34,11 +34,11 @@
         .back-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -46,7 +46,7 @@
         }
         .progress-bar-container {
             flex-grow: 1;
-            height: 10px;
+            height: 9px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             margin: 0 15px;
@@ -64,7 +64,7 @@
             align-items: center;
             gap: 4px;
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .header-text {
@@ -73,20 +73,20 @@
         }
         h1 {
             margin: 0 0 2px 0;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
         p.subtitle {
             margin: 0;
             color: #e0aaff;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
-        /* Контейнер часов */
+        /* Часы стали крупнее (330px вместо 280px) */
         .watch-container {
-            width: 280px;
-            height: 280px;
+            width: 330px;
+            height: 330px;
             position: relative;
-            margin: 0;
+            margin: -5px 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -99,10 +99,10 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
         }
 
-        /* Цифры точно по фиолетовому циферблату */
+        /* Цифры под увеличенный циферблат (радиус 73px при центре 165px) */
         .clock-number {
             position: absolute;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: bold;
             color: #ffffff;
             text-shadow: 0 1px 3px rgba(0,0,0,0.9);
@@ -110,7 +110,7 @@
             z-index: 5;
         }
 
-        /* Стрелки строго внутри фиолетового круга */
+        /* Стрелки оставлены прежней удобной длины */
         .hand {
             position: absolute;
             bottom: 50%;
@@ -152,22 +152,22 @@
             background: rgba(60, 10, 90, 0.5);
             border: 2px solid rgba(255, 255, 255, 0.15);
             border-radius: 16px;
-            padding: 10px;
+            padding: 8px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             backdrop-filter: blur(5px);
         }
         .answer-title {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #e0aaff;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             font-weight: 500;
         }
         .answer-slots {
-            min-height: 44px;
+            min-height: 40px;
             width: 100%;
             display: flex;
             flex-wrap: wrap;
@@ -183,16 +183,16 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 6px;
-            margin-bottom: 8px;
-            min-height: 85px;
+            margin-bottom: 6px;
+            min-height: 80px;
         }
 
         .tile {
-            padding: 10px 14px;
+            padding: 8px 12px;
             background-color: #f3e8ff;
             border-bottom: 4px solid #d8b4fe;
             border-radius: 12px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: bold;
             color: #4a0e4e;
             cursor: pointer;
@@ -217,8 +217,8 @@
         }
         button.action-btn {
             width: 100%;
-            padding: 14px;
-            font-size: 1.05rem;
+            padding: 12px;
+            font-size: 1rem;
             font-weight: bold;
             text-transform: uppercase;
             border: none;
@@ -244,11 +244,11 @@
         .feedback {
             width: 100%;
             max-width: 450px;
-            margin-bottom: 6px;
-            font-size: 0.95rem;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
             font-weight: bold;
             text-align: center;
-            min-height: 20px;
+            min-height: 18px;
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -316,9 +316,9 @@
 
             function setupClockNumbers() {
                 clockContainer.querySelectorAll('.clock-number').forEach(e => e.remove());
-                const radius = 62; // Уменьшенный радиус, чтобы цифры легли ровно по фиолетовому циферблату
-                const centerX = 140; // Центр контейнера (280 / 2)
-                const centerY = 140;
+                const radius = 73; // Радиус под увеличенные часы (330 / 2 = 165 центр)
+                const centerX = 165; 
+                const centerY = 165;
 
                 for (let i = 1; i <= 12; i++) {
                     let numDiv = document.createElement('div');
