@@ -7,7 +7,8 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #4a0e4e, #240046), url('bg.png') no-repeat center center fixed;
+            /* Подключаем вашу текстуру фона bg.jpg */
+            background: linear-gradient(135deg, #4a0e4e, #240046), url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
             display: flex;
             flex-direction: column;
@@ -82,10 +83,10 @@
             font-size: 0.8rem;
         }
 
-        /* Фиксированный контейнер часов с четкими размерами для мобильных */
+        /* Крупный и фиксированный блок часов */
         .watch-container {
-            width: 240px;
-            height: 240px;
+            width: 270px;
+            height: 270px;
             position: relative;
             margin: 5px auto;
             flex-shrink: 0;
@@ -101,10 +102,10 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
         }
 
-        /* Идеально откалиброванные цифры под циферблат */
+        /* Цифры циферблата */
         .clock-number {
             position: absolute;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: bold;
             color: #ffffff;
             text-shadow: 0 1px 3px rgba(0,0,0,0.9);
@@ -112,37 +113,37 @@
             z-index: 5;
         }
 
-        /* Фиксированные стрелки, привязанные к центру часов (120px / 120px) */
+        /* Стрелки, привязанные к центру часов (135px / 135px) */
         .hand {
             position: absolute;
-            bottom: 120px; /* Строго центр по вертикали */
-            left: 120px;  /* Строго центр по горизонтали */
+            bottom: 135px;
+            left: 135px;
             transform-origin: bottom center;
             transition: transform 0.5s cubic-bezier(0.4, 2.0, 0.2, 1);
             z-index: 6;
         }
         .hour-hand {
-            width: 4px;
-            height: 34px;
-            margin-left: -2px;
+            width: 5px;
+            height: 40px;
+            margin-left: -2.5px;
             background: #ffffff;
             border-radius: 2px;
         }
         .minute-hand {
-            width: 2px;
-            height: 50px;
-            margin-left: -1px;
+            width: 2.5px;
+            height: 58px;
+            margin-left: -1.25px;
             background: #ff3366;
             border-radius: 1px;
         }
         .center-dot {
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             background: #ffffff;
             border-radius: 50%;
             position: absolute;
-            top: 120px;
-            left: 120px;
+            top: 135px;
+            left: 135px;
             transform: translate(-50%, -50%);
             z-index: 7;
             box-shadow: 0 1px 3px rgba(0,0,0,0.5);
@@ -275,7 +276,6 @@
         <p class="subtitle">Соберите время из плиточек</p>
     </div>
 
-    <!-- Фиксированный блок часов -->
     <div class="watch-container" id="clockContainer">
         <img src="watch.png" alt="Watch" class="watch-bg-img" onerror="this.style.display='none'">
         <div class="hand hour-hand" id="hourHand"></div>
@@ -319,9 +319,9 @@
 
             function setupClockNumbers() {
                 clockContainer.querySelectorAll('.clock-number').forEach(e => e.remove());
-                const radius = 54; // Фиксированный радиус под идеальное положение цифр
-                const centerX = 120; // Центр фиксированного контейнера (240 / 2)
-                const centerY = 120;
+                const radius = 61; // Радиус под новый размер часов (270px / 2 = 135px центр)
+                const centerX = 135; 
+                const centerY = 135;
 
                 for (let i = 1; i <= 12; i++) {
                     let numDiv = document.createElement('div');
