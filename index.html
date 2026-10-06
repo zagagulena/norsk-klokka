@@ -16,7 +16,7 @@
             min-height: 100vh;
             min-height: 100dvh;
             margin: 0;
-            padding: max(15px, env(safe-area-inset-top)) 15px 20px;
+            padding: max(10px, env(safe-area-inset-top)) 15px 20px;
             box-sizing: border-box;
             color: #ffffff;
             user-select: none;
@@ -81,10 +81,10 @@
             font-size: 0.85rem;
         }
 
-        /* Увеличили размер часов для удобства */
+        /* Контейнер часов */
         .watch-container {
-            width: 260px;
-            height: 260px;
+            width: 280px;
+            height: 280px;
             position: relative;
             margin: 0;
             display: flex;
@@ -99,18 +99,18 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
         }
 
-        /* Цифры смещены точно на шкалу циферблата */
+        /* Цифры точно по фиолетовому циферблату */
         .clock-number {
             position: absolute;
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             font-weight: bold;
             color: #ffffff;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.9);
             transform: translate(-50%, -50%);
             z-index: 5;
         }
 
-        /* Увеличенные стрелки */
+        /* Стрелки строго внутри фиолетового круга */
         .hand {
             position: absolute;
             bottom: 50%;
@@ -120,22 +120,22 @@
             z-index: 6;
         }
         .hour-hand {
-            width: 6px;
-            height: 52px;
-            margin-left: -3px;
+            width: 5px;
+            height: 38px;
+            margin-left: -2.5px;
             background: #ffffff;
             border-radius: 3px;
         }
         .minute-hand {
-            width: 3px;
-            height: 76px;
-            margin-left: -1.5px;
+            width: 2.5px;
+            height: 56px;
+            margin-left: -1.25px;
             background: #ff3366;
             border-radius: 2px;
         }
         .center-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: #ffffff;
             border-radius: 50%;
             position: absolute;
@@ -273,7 +273,6 @@
         <p class="subtitle">Соберите время из плиточек</p>
     </div>
 
-    <!-- Увеличенный контейнер часов -->
     <div class="watch-container" id="clockContainer">
         <img src="watch.png" alt="Watch" class="watch-bg-img" onerror="this.style.display='none'">
         <div class="hand hour-hand" id="hourHand"></div>
@@ -315,12 +314,11 @@
             const scoreCount = document.getElementById('scoreCount');
             const progressFill = document.getElementById('progressFill');
 
-            // Расставляем цифры по внешнему краю циферблата
             function setupClockNumbers() {
                 clockContainer.querySelectorAll('.clock-number').forEach(e => e.remove());
-                const radius = 86; // Увеличили радиус под размер циферблата
-                const centerX = 130; // Центр контейнера (260 / 2)
-                const centerY = 130;
+                const radius = 62; // Уменьшенный радиус, чтобы цифры легли ровно по фиолетовому циферблату
+                const centerX = 140; // Центр контейнера (280 / 2)
+                const centerY = 140;
 
                 for (let i = 1; i <= 12; i++) {
                     let numDiv = document.createElement('div');
