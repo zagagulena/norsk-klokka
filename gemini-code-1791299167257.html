@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hva er klokka?</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            /* Подставляем вашу текстуру фона (bg.png), а если её нет — фиолетовый градиент */
+            background: linear-gradient(135deg, #4a0e4e, #240046), url('bg.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0;
+            padding: max(20px, env(safe-area-inset-top)) 15px 25px;
+            box-sizing: border-box;
+            color: #ffffff;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Верхняя панель */
+        .top-bar {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .progress-bar-container {
+            flex-grow: 1;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 20%;
+            background: #9d4edd;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .stats-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* Заголовок */
+        .header-text {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        h1 {
+            margin: 0 0 3px 0;
+            font-size: 1.7rem;
+        }
+        p.subtitle {
+            margin: 0;
+            color: #e0aaff;
+            font-size: 0.9rem;
+        }
+
+        /* Контейнер часов с вашим изображением и цифрами */
+        .watch-container {
+            width: 230px;
+            height: 230px;
+            position: relative;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .watch-bg-img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+        }
+
+        /* Цифры на циферблате */
+        .clock-number {
+            position: absolute;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+
+        /* Стрелки часов */
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            transition: transform 0.5s cubic-bezier(0.4, 2.0, 0.2, 1);
+            z-index: 6;
+        }
+        .hour-hand {
+            width: 6px;
+            height: 45px;
+            margin-left: -3px;
+            background: #ffffff;
+            border-radius: 3px;
+        }
+        .minute-hand {
+            width: 3px;
+            height: 65px;
+            margin-left: -1.5px;
+            background: #ff3366;
+            border-radius: 2px;
+        }
+        .center-dot {
+            width: 10px;
+            height: 10px;
+            background: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 7;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Зона ответа */
+        .answer-card {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(60, 10, 90, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 18px;
+            padding: 12px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 10px;
+            backdrop-filter: blur(5px);
+        }
+        .answer-title {
+            font-size: 0.9rem;
+            color: #e0aaff;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .answer-slots {
+            min-height: 48px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Банк слов */
+        .word-bank {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            min-height: 90px;
+        }
+
+        /* Плитки */
+        .tile {
+            padding: 10px 16px;
+            background-color: #f3e8ff;
+            border-bottom: 4px solid #d8b4fe;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #4a0e4e;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .tile:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+        .tile.hidden {
+            display: none;
+        }
+        .answer-slots .tile {
+            background-color: #e9d5ff;
+            border-bottom-width: 3px;
+        }
+
+        /* Кнопка */
+        .action-container {
+            width: 100%;
+            max-width: 450px;
+        }
+        button.action-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 14px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.4);
+            cursor: not-allowed;
+            border-bottom: 4px solid rgba(0, 0, 0, 0.2);
+        }
+        button.action-btn.active {
+            background-color: #06d6a0;
+            color: white;
+            border-bottom-color: #059669;
+            cursor: pointer;
+        }
+        button.action-btn.wrong-state {
+            background-color: #ff4b4b;
+            color: white;
+            border-bottom-color: #c52222;
+            cursor: pointer;
+        }
+        
+        .feedback {
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            min-height: 22px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .feedback.show { opacity: 1; }
+        .correct-text { color: #5ef3c3; }
+        .incorrect-text { color: #ff8585; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <button class="back-btn">❮</button>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="stats-badge">❤️ <span id="livesCount">5</span></div>
+        <div class="stats-badge" style="margin-left: 8px;">⭐ <span id="scoreCount">0</span></div>
+    </div>
+
+    <div class="header-text">
+        <h1>Hva er klokka?</h1>
+        <p class="subtitle">Соберите время из плиточек</p>
+    </div>
+
+    <!-- Часы с вашей картинкой и стрелками -->
+    <div class="watch-container" id="clockContainer">
+        <img src="watch.png" alt="Watch" class="watch-bg-img" onerror="this.style.display='none'">
+        <div class="hand hour-hand" id="hourHand"></div>
+        <div class="hand minute-hand" id="minuteHand"></div>
+        <div class="center-dot"></div>
+    </div>
+
+    <div class="answer-card">
+        <div class="answer-title">Выберите слова в правильном порядке</div>
+        <div class="answer-slots" id="answerBox"></div>
+    </div>
+
+    <div class="word-bank" id="wordBank"></div>
+
+    <div class="feedback" id="feedback"></div>
+    <div class="action-container">
+        <button class="action-btn" id="actionBtn">Проверить</button>
+    </div>
+
+    <script>
+        (function() {
+            const norwegianNumbers = ["tolv", "ett", "to", "tre", "fire", "fem", "seks", "sju", "åtte", "ni", "ti", "elleve"];
+            const minutesOptions = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+            
+            let correctAnswer = "";
+            let state = "playing";
+            let lives = 5;
+            let score = 0;
+            let progress = 10;
+
+            const hourHand = document.getElementById('hourHand');
+            const minuteHand = document.getElementById('minuteHand');
+            const clockContainer = document.getElementById('clockContainer');
+            const answerBox = document.getElementById('answerBox');
+            const wordBank = document.getElementById('wordBank');
+            const actionBtn = document.getElementById('actionBtn');
+            const feedback = document.getElementById('feedback');
+            const livesCount = document.getElementById('livesCount');
+            const scoreCount = document.getElementById('scoreCount');
+            const progressFill = document.getElementById('progressFill');
+
+            // Автоматическая расстановка цифр по кругу над картинкой часов
+            function setupClockNumbers() {
+                const radius = 68; // Радиус расположения цифр от центра
+                const centerX = 115; // Центр контейнера по X
+                const centerY = 115; // Центр контейнера по Y
+
+                for (let i = 1; i <= 12; i++) {
+                    let numDiv = document.createElement('div');
+                    numDiv.className = 'clock-number';
+                    numDiv.textContent = i;
+                    
+                    let angle = (i * 30 - 90) * (Math.PI / 180);
+                    let x = centerX + radius * Math.cos(angle);
+                    let y = centerY + radius * Math.sin(angle);
+                    
+                    numDiv.style.left = x + 'px';
+                    numDiv.style.top = y + 'px';
+                    clockContainer.appendChild(numDiv);
+                }
+            }
+
+            function generateTime() {
+                state = "playing";
+                answerBox.innerHTML = "";
+                wordBank.innerHTML = "";
+                feedback.classList.remove('show');
+                actionBtn.textContent = "Проверить";
+                actionBtn.className = "action-btn";
+                
+                let h = Math.floor(Math.random() * 12) + 1; 
+                let m = minutesOptions[Math.floor(Math.random() * minutesOptions.length)]; 
+
+                updateClockVisuals(h, m);
+                calculateCorrectAnswer(h, m);
+                generateTiles();
+            }
+
+            function updateClockVisuals(h, m) {
+                const minuteDeg = m * 6;
+                const hourDeg = (h % 12) * 30 + (m / 60) * 30;
+                
+                minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+                hourHand.style.transform = `rotate(${hourDeg}deg)`;
+            }
+
+            function calculateCorrectAnswer(h, m) {
+                let currentHourStr = norwegianNumbers[h % 12];
+                let nextHourStr = norwegianNumbers[(h + 1) % 12];
+
+                if (m === 0) {
+                    correctAnswer = currentHourStr;
+                } else if (m === 5) {
+                    correctAnswer = `fem over ${currentHourStr}`;
+                } else if (m === 10) {
+                    correctAnswer = `ti over ${currentHourStr}`;
+                } else if (m === 15) {
+                    correctAnswer = `kvart over ${currentHourStr}`;
+                } else if (m === 20) {
+                    correctAnswer = `ti på halv ${nextHourStr}`;
+                } else if (m === 25) {
+                    correctAnswer = `fem på halv ${nextHourStr}`;
+                } else if (m === 30) {
+                    correctAnswer = `halv ${nextHourStr}`;
+                } else if (m === 35) {
+                    correctAnswer = `fem over halv ${nextHourStr}`;
+                } else if (m === 40) {
+                    correctAnswer = `ti over halv ${nextHourStr}`;
+                } else if (m === 45) {
+                    correctAnswer = `kvart på ${nextHourStr}`;
+                } else if (m === 50) {
+                    correctAnswer = `ti på ${nextHourStr}`;
+                } else if (m === 55) {
+                    correctAnswer = `fem på ${nextHourStr}`;
+                }
+            }
+
+            function generateTiles() {
+                let correctWordsList = correctAnswer.split(" ");
+                let allWords = [...correctWordsList];
+                
+                const distractors = ["halv", "kvart", "over", "på", "fem", "ti",
+                    norwegianNumbers[Math.floor(Math.random() * 12)]
+                ];
+                
+                let addedDistractors = 0;
+                for (let word of distractors) {
+                    if (!allWords.includes(word) && addedDistractors < 4) {
+                        allWords.push(word);
+                        addedDistractors++;
+                    }
+                }
+
+                for (let i = allWords.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [allWords[i], allWords[j]] = [allWords[j], allWords[i]];
+                }
+
+                allWords.forEach((word) => {
+                    let tile = document.createElement('div');
+                    tile.className = 'tile';
+                    tile.textContent = word;
+                    tile.onclick = () => selectWord(word, tile);
+                    wordBank.appendChild(tile);
+                });
+                
+                updateButtonState();
+            }
+
+            function selectWord(word, originalTile) {
+                if (state !== "playing") return;
+                originalTile.classList.add('hidden'); 
+                
+                let answerTile = document.createElement('div');
+                answerTile.className = 'tile';
+                answerTile.textContent = word;
+                answerTile.onclick = () => {
+                    if (state !== "playing") return;
+                    answerBox.removeChild(answerTile);
+                    originalTile.classList.remove('hidden'); 
+                    updateButtonState();
+                };
+                
+                answerBox.appendChild(answerTile);
+                updateButtonState();
+            }
+
+            function updateButtonState() {
+                if (answerBox.children.length > 0) {
+                    actionBtn.classList.add('active');
+                } else {
+                    actionBtn.classList.remove('active');
+                }
+            }
+
+            function checkAnswer() {
+                if (state === "success" || state === "failed") {
+                    generateTime();
+                    return;
+                }
+
+                if (answerBox.children.length === 0) return; 
+
+                let currentAnswer = Array.from(answerBox.children)
+                                         .map(tile => tile.textContent)
+                                         .join(" ");
+
+                if (currentAnswer === correctAnswer) {
+                    state = "success";
+                    score += 10;
+                    progress = Math.min(100, progress + 15);
+                    scoreCount.textContent = score;
+                    progressFill.style.width = progress + '%';
+
+                    feedback.innerHTML = `<span class="correct-text">Отлично! Riktig! 🎉</span>`;
+                    feedback.classList.add('show');
+                    actionBtn.textContent = "Продолжить";
+                    actionBtn.className = "action-btn active";
+                } else {
+                    state = "failed";
+                    lives = Math.max(0, lives - 1);
+                    livesCount.textContent = lives;
+
+                    feedback.innerHTML = `<span class="incorrect-text">Ответ: <strong>${correctAnswer}</strong></span>`;
+                    feedback.classList.add('show');
+                    actionBtn.textContent = "Понятно";
+                    actionBtn.className = "action-btn wrong-state";
+                    
+                    if (lives <= 0) {
+                        setTimeout(() => {
+                            alert("Игра окончена! Начинаем заново.");
+                            lives = 5;
+                            score = 0;
+                            progress = 10;
+                            livesCount.textContent = lives;
+                            scoreCount.textContent = score;
+                            progressFill.style.width = progress + '%';
+                            generateTime();
+                        }, 1500);
+                    }
+                }
+            }
+
+            actionBtn.onclick = checkAnswer;
+            setupClockNumbers();
+            generateTime();
+        })();
+    </script>
+</body>
+</html>
